@@ -18,7 +18,7 @@ session_start();
 
 function login($username, $pass)
 {
-    /*
+
     $host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
     $user = "UMDtalk";
     $password = "lkeMcds43#sd";
@@ -28,10 +28,10 @@ function login($username, $pass)
     if ($db_connection->connect_error) {
         die($db_connection->connect_error);
     }
-    */
+
 
     //localDB
-    $servername = "cmsc389N-GroupProject";
+   /* $servername = "cmsc389N-GroupProject";
     $user = "user";
     $password = "cmsc389N";
 
@@ -42,7 +42,7 @@ function login($username, $pass)
     if ($db_connection->connect_error) {
         die("Connection failed: " . $db_connection->connect_error);
     }
-    //echo "Connected successfully";
+    //echo "Connected successfully";*/
 
     $n = "name";
     /* Query */
@@ -52,14 +52,15 @@ function login($username, $pass)
     /* Executing query */
     $result = $db_connection->query($query);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $db_pass = "";
+    $db_pass = $row['password'];
+    echo($row['password']);
     //Finding Password in database to compare too
-    foreach ($row as $key => $value) {
+    /*foreach ($row as $key => $value) {
         if ($key == "password") {
             $db_pass = $value;
             break; //1 password has been found for username
         }
-    }
+    }*/
 
     if (!$result) { //Error talking to database
         die("Retrieval failed: " . $db_connection->error);

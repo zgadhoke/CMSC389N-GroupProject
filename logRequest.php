@@ -14,19 +14,35 @@
 
 <?php
 
+session_start();
+
 function login($username, $pass)
 {
+    /*
     $host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
     $user = "UMDtalk";
     $password = "lkeMcds43#sd";
     $database = "UMDtalk";
 
-
-
     $db_connection = new mysqli($host, $user, $password, $database);
     if ($db_connection->connect_error) {
         die($db_connection->connect_error);
     }
+    */
+
+    //localDB
+    $servername = "cmsc389N-GroupProject";
+    $user = "user";
+    $password = "cmsc389N";
+
+    //Create Connection
+    $db_connection = new mysqli("localhost",$user,$password,$servername);
+
+    //Check Connection
+    if ($db_connection->connect_error) {
+        die("Connection failed: " . $db_connection->connect_error);
+    }
+    //echo "Connected successfully";
 
     $n = "name";
     /* Query */
@@ -48,8 +64,10 @@ function login($username, $pass)
     if (!$result) { //Error talking to database
         die("Retrieval failed: " . $db_connection->error);
     } else if (password_verify($pass, $db_pass)) {//Successfully logged in
-        session_start();
         $_SESSION['user'] = $username;
+        $_SESSION['pass'] = $db_pass;
+        $_SESSION['started'] = 1;
+        $_SESSION['db_connection'] = $db_connection;
         header("Location: categories.php");
     } else {
         //Invalid Credentials
@@ -63,16 +81,19 @@ function login($username, $pass)
     /* Freeing memory */
     $result->close();
     /* Closing connection */
-    $db_connection->close();
+    //$db_connection->close();
 
 }
 
-if (isset($_POST["username"]) && isset($_POST["password"])) {
+if($_SESSION['started'] == 1) {
+    header("Location: categories.php");
+} else if (isset($_POST["username"]) && isset($_POST["password"])) {
     $u = $_POST["username"];
     $p = $_POST["password"];
     login($u, $p);
-
 }
+
+
 ?>
 </body>
 </html>

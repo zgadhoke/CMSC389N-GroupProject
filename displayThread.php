@@ -27,31 +27,28 @@ if ($db_connection->connect_error) {
     die("Connection failed: " . $db_connection->connect_error);
 }
 //echo "Connected successfully";
-
-$user = $_SESSION['user'];
-$category = $_POST['category'];
-$subject = $_POST['subject'];
-$text = $_POST['text'];
-$time = date('Y-m-d H:i:s');
-$sql = ("INSERT INTO threads VALUES ('$user', '$time', '$category', '$subject', '$text')");
+$category = $_SESSION['category'];
+echo $category;
+$sql = ("select * from threads order by category");
 $result = $db_connection->query($sql);
 
-if ($result) {
-    $_SESSION["category"] = $category;
-    echo "Your category has been created!<br>
-    <form method=\"post\" action=\"displayThread.php\"> 
-      <button class='btn btn-small btn-primary' type=\"submit\">Go to $category</button> 
-    </form> ";
 
+if($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $author = $row['user'];
+        $time = $row['time'];
+        $category = $row['category'];
+        $subject = $row['subject'];
+        $text = $row['text'];
+        $text_short = substr($text, 0,20);
+
+        echo "<h2><a href='displayPost.php'>$subject</a></h2><br>";
+    }
 }
 else {
-    echo "Couldn't create category :(";
+    die("Error: " . $db_connection->error);
+    return -1;
 }
-
-/* Freeing memory */
-$result->close();
-/* Closing connection */
-$db_connection->close();
 
 ?>
 <form method="post" action="categories.php">

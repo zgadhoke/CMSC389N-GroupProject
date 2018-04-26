@@ -14,33 +14,36 @@
     <?php
         session_start();
 
-    $host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
-    $user = "UMDtalk";
-    $password = "lkeMcds43#sd";
-    $database = "UMDtalk";
+        //localDB
+        $servername = "cmsc389N-GroupProject";
+        $user = "user";
+        $password = "cmsc389N";
 
+        //Create Connection
+        $db_connection = new mysqli("localhost",$user,$password,$servername);
 
-
-    /* Connecting to the database */
-        $db_connection = new mysqli($host, $user, $password, $database);
+        //Check Connection
         if ($db_connection->connect_error) {
-            die($db_connection->connect_error);
-            return -1;
+            die("Connection failed: " . $db_connection->connect_error);
         }
-        $sql = ("select * from threads order by category");
+        //echo "Connected successfully";
+
+        //$sql = ("select * from threads order by category");
+        $sql = ("select distinct category from threads order by category");
         $result = $db_connection->query($sql);
         $count = mysqli_num_rows($result);
 
         if ($count == 0) {
             echo "<h3>No categories exist yet!</h3>";
         }
-
+        
         while ($count > 0) {
             $row = $result->fetch_assoc();
-            $_SESSION["category"] = $row;
+            $_SESSION["category"] = $row[category];
             echo "<h2><a href='displayThread.php'>$row[category]</a></h2><br>";
             $count--;
         }
+
 
         /* Freeing memory */
         $result->close();

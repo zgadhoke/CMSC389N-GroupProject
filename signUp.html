@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <title>SignUp</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<h1> Sign Up For UMD Talk </h1>
+
+<p>
+    UMD Talk is a social media platform for terps and marylanders who want to discuss what is important to them.
+    On our site, you will be able to connect with fellow terps and share whatever you like.
+</p>
+
+<br>
+
+<div>
+    <form action="createRequest.php" method="post">
+
+        <div class="form-group">
+            <label for="user">Create a Username: </label>
+            <input type="text" class="form-control" id="user" name="user" required>
+        </div>
+        <div class="form-group">
+            <label for="pass">Create a Password:</label>
+            <input class="form-control" type="password" id="pass" name="pass" required>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Sign Up!</button>
+
+    </form>
+    <hr>
+<h4>Already have an account?</h4>
+    <form action="loginScreen.html" method="post">
+        <button type="submit" class="btn btn-small">Go to login</button>
+    </form>
+</div>
+</body>
+</html>

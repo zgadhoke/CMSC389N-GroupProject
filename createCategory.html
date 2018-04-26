@@ -1,0 +1,35 @@
+<html lang="en">
+
+<head>
+    <title>Create Category</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<h1>Create Category</h1><br>
+<form method="POST" action="createCategory.php">
+    Category: <br>
+    <input type="text" name="category">
+    <br>
+    <br>
+    Post Subject: <br>
+    <input type="text" name="subject">
+    <br>
+    <br>
+    Post Text: <br>
+    <textarea rows="4" cols="50" name="text"></textarea>
+    <br>
+    <br>
+    <button type="submit" class="btn btn-small btn-primary">Submit</button>
+</form>
+<form method="post" action="categories.php">
+    <button type="submit" class="btn btn-small">Cancel</button>
+</form>
+</body>
+</html>

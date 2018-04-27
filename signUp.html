@@ -22,20 +22,42 @@
 <br>
 
 <div>
-    <form action="createRequest.php" method="post">
+    <form name="data" action="createRequest.php" enctype="mulitpart/form-data" onsubmit="return validateForm()" method="post">
+
 
         <div class="form-group">
             <label for="user">Create a Username: </label>
             <input type="text" class="form-control" id="user" name="user" required>
         </div>
         <div class="form-group">
-            <label for="pass">Create a Password:</label>
-            <input class="form-control" type="password" id="pass" name="pass" required>
+            <label for="password">Create a Password:</label>
+            <input class="form-control" type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="confirm">Confirm Password: </label>
+            <input class="form-control" type="password" id="confirm" name="confirm" required>
         </div>
 
         <button class="btn btn-block btn-primary"  type="submit">Sign Up!</button>
-
     </form>
+
+    <script>
+            function validateForm() {
+
+            var password = document.forms["data"]["password"].value;
+            var confirm = document.forms["data"]["confirm"].value;
+
+
+            if (password != confirm) {
+                alert("Passwords do not match!");
+                return false;
+            }
+
+            else return true;
+        }
+    </script>
+
     <hr>
 <h4>Already have an account?</h4>
     <form action="loginScreen.html" method="post">

@@ -14,7 +14,6 @@
 function createNewUser($username, $pass)
 {
 
-
     $host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
     $user = "UMDtalk";
     $password = "lkeMcds43#sd";
@@ -26,25 +25,12 @@ function createNewUser($username, $pass)
     $db_connection = new mysqli($host, $user, $password, $database);
     if ($db_connection->connect_error) {
         die($db_connection->connect_error);
+        echo "connection failed";
         return -1;
     }
 
 
     $passHash = password_hash($pass, PASSWORD_DEFAULT);
-
-    //localDB
-    /*$servername = "cmsc389N-GroupProject";
-    $user = "user";
-    $password = "cmsc389N";
-
-    //Create Connection
-    $db_connection = new mysqli("localhost",$user,$password,$servername);
-
-    //Check Connection
-    if ($db_connection->connect_error) {
-        die("Connection failed: " . $db_connection->connect_error);
-    }*/
-    //echo "Connected successfully";
 
     $n = "name";
     $check = ("select * from users where $n = '$username'");
@@ -71,7 +57,7 @@ function createNewUser($username, $pass)
     $passHash = mysqli_escape_string($db_connection, $passHash);
     $username = mysqli_escape_string($db_connection, $username);
 
-    $query = "insert into users values('$username', '$passHash')";
+    $query = "insert into users values('$username', '$passHash', NULL)";
     /* Executing query */
     $result = $db_connection->query($query);
     if (!$result) {
@@ -79,7 +65,7 @@ function createNewUser($username, $pass)
         return -1;
     } else {
         echo "<h1>Welcome, $username</h1><br>";
-        echo "<form method='post' action='loginScreen.html'> <button type='submit' class='btn btn-primary'>Go To Login</button>
+        echo "<form method='post' action='loginScreen.html'> <button type='submit' class='btn btn-primary btn-small'>Go To Login</button>
               </form> ";
     }
 
@@ -89,9 +75,10 @@ function createNewUser($username, $pass)
 }
 
 
-if (isset($_POST["user"]) && isset($_POST["pass"])) {
+if (isset($_POST["user"]) && isset($_POST["password"])) {
     $u = $_POST["user"];
-    $p = $_POST["pass"];
+    $p = $_POST["password"];
+
     createNewUser($u, $p);
 }
 ?>

@@ -52,6 +52,7 @@ $posts = mysqli_fetch_all($result, MYSQLI_NUM);
 $body .= <<<EOBODY
 <div class="container-fluid">
     <h1>$thread_name</h1>
+    <button type="submit" class="btn btn-small" formaction="categories.php">Back to Categories</button>
 
 EOBODY;
 

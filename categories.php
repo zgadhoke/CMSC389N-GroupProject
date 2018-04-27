@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="style.css" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
@@ -65,7 +66,7 @@
         while ($count > 0) {
             $row = $result->fetch_assoc();
             $category=$row['category'];
-            echo "<button type='submit' name='category' value='$category'><h2>$category</h2></button><br>";
+            echo "<button class='button' type='submit' name='category' value='$category'><h2>$category</h2></button><br>";
             $count--;
         }
         echo "</form>";

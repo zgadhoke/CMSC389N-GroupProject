@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="style.css" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
@@ -14,22 +15,29 @@
 
 <h1>Create Category</h1><br>
 <form method="POST" action="createCategory.php">
-    Category: <br>
-    <input type="text" name="category">
-    <br>
-    <br>
-    Post Subject: <br>
-    <input type="text" name="subject">
-    <br>
-    <br>
-    Post Text: <br>
-    <textarea rows="4" cols="50" name="text"></textarea>
-    <br>
-    <br>
-    <button type="submit" class="btn btn-small btn-primary">Submit</button>
+
+    <div class="form-group">
+        <label for="category">Category: </label>
+        <input class="form-control" type="text" id="category" name = "category" required>
+    </div>
+    <div class="form-group">
+        <label for="subject">Post Subject: </label>
+        <input class="form-control" type="text" id="subject" name = "subject" required>
+    </div>
+
+    <div class="form-group">
+        <label for="text">Post Text: </label>
+        <textarea class="form-control" rows="4" cols="50" id="text" name="text"></textarea>
+    </div>
+
+    <div class="form-group">
+        <input class="btn btn-block btn-primary" type="submit">
+    </div>
 </form>
 <form method="post" action="categories.php">
-    <button type="submit" class="btn btn-small">Cancel</button>
+    <div class="form-group">
+        <input class="btn btn-block btn-primary" type="submit" value="Cancel">
+    </div>
 </form>
 </body>
 </html>

@@ -1,0 +1,23 @@
+body {
+    padding-right: 500px;
+    padding-left: 500px;
+    padding-top: 50px;
+}
+
+h1 {
+    text-decoration: underline;
+}
+
+label {
+    color: gray;
+}
+
+button {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.row {
+    width: 500%;
+}

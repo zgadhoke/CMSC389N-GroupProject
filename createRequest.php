@@ -49,8 +49,9 @@ function createNewUser($username, $pass)
     $n = "name";
     $check = ("select * from users where $n = '$username'");
     $checkResult = $db_connection->query($check);
-
-    if ($username == $checkResult) {
+    $result =  $checkResult->fetch_assoc();
+   
+    if ($username == $result["name"]) {
         echo "<h2>Username Already Exists :(</h2><br>";
 
         echo "<form method='post' action='signUp.html'>

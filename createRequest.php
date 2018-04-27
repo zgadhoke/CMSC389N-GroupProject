@@ -14,7 +14,7 @@
 function createNewUser($username, $pass)
 {
 
-    /*
+
     $host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
     $user = "UMDtalk";
     $password = "lkeMcds43#sd";
@@ -28,12 +28,12 @@ function createNewUser($username, $pass)
         die($db_connection->connect_error);
         return -1;
     }
-    */
+
 
     $passHash = password_hash($pass, PASSWORD_DEFAULT);
 
     //localDB
-    $servername = "cmsc389N-GroupProject";
+    /*$servername = "cmsc389N-GroupProject";
     $user = "user";
     $password = "cmsc389N";
 
@@ -43,15 +43,14 @@ function createNewUser($username, $pass)
     //Check Connection
     if ($db_connection->connect_error) {
         die("Connection failed: " . $db_connection->connect_error);
-    }
+    }*/
     //echo "Connected successfully";
 
     $n = "name";
-    $check = ("select 1 from users where $n = '$username'");
+    $check = ("select * from users where $n = '$username'");
     $checkResult = $db_connection->query($check);
-    $count = mysqli_num_rows($checkResult);
 
-    if ($count > 0) {
+    if ($username == $checkResult) {
         echo "<h2>Username Already Exists :(</h2><br>";
 
         echo "<form method='post' action='signUp.html'>

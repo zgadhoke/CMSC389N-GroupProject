@@ -8,6 +8,11 @@ $user = "UMDtalk";
 $password = "lkeMcds43#sd";
 $database = "UMDtalk";
 
+/*$host = "localhost";
+$database = "cmsc389N-GroupProject";
+$user = "user";
+$password = "cmsc389N";*/
+
 /* Connecting to the database */
 $db_connection = new mysqli($host, $user, $password, $database);
 if ($db_connection->connect_error) {
@@ -15,11 +20,29 @@ if ($db_connection->connect_error) {
     return -1;
 }
 
-$thread_name = $_SESSION['thread'];
+$thread_name = $_SESSION['category'];
 $body = "";
 
+if(isset($_POST['submitPost'])) {
+    $post = $_POST['newPost'];
+    $user = $_SESSION['user'];
+    $date = date('Y/m/d H:i:s');
+    $thread = $thread_name;
+    $subject = '';
+    $query = "insert into threads values('$user', '$date', '$thread', '$subject', '$post')";
+    $result = $db_connection->query($query);
+    if(!$result) {
+        echo "fucked up" . $db_connection->error;
+    }
+    $body .= <<<EOBODY
+        <div class="container-fluid">Thread updated! Refresh page or <a href="thread.php">click here</a> to see your post.</div>
+EOBODY;
+
+}
+
+
 //building query to get posts for the thread
-$query = "select * from posts where thread = ";
+$query = "select * from threads where category = ";
 $query .= "\"$thread_name\"";
 $query .= " order by time";
 
@@ -34,9 +57,9 @@ $body .= <<<EOBODY
 EOBODY;
 
 foreach($posts as $post) {
-    $user = $post[2];
+    $user = $post[0];
     $time = $post[1];
-    $text = $post[0];
+    $text = $post[4];
     $body .= <<<EOBODY
         <div class="row">
             <div class="col-xs-4">
@@ -55,8 +78,22 @@ foreach($posts as $post) {
         </div>
 EOBODY;
 }
-
 $body .= "</div>";
+
+$body .= <<<EOBODY
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="container-fluid">
+                <form action="{$_SERVER['PHP_SELF']}" method="post">
+                <strong>New Post: </strong><br>
+                <textarea name="newPost" rows="6" cols="50"></textarea><br>
+                <input type="submit" name="submitPost" value="Submit Post">
+                </form>
+            </div>
+        </div>
+    </div>
+EOBODY;
+
 
 $page = generatePage($body);
 

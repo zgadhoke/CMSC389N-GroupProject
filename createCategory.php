@@ -14,7 +14,18 @@
 <?php
 session_start();
 
-//localDB
+$host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
+$user = "UMDtalk";
+$password = "lkeMcds43#sd";
+$database = "UMDtalk";
+
+$db_connection = new mysqli($host, $user, $password, $database);
+if ($db_connection->connect_error) {
+    die($db_connection->connect_error);
+    return -1;
+}
+
+/*//localDB
 $servername = "cmsc389N-GroupProject";
 $user = "user";
 $password = "cmsc389N";
@@ -26,7 +37,7 @@ $db_connection = new mysqli("localhost",$user,$password,$servername);
 if ($db_connection->connect_error) {
     die("Connection failed: " . $db_connection->connect_error);
 }
-//echo "Connected successfully";
+//echo "Connected successfully";*/
 
 $user = $_SESSION['user'];
 $category = $_POST['category'];
@@ -39,7 +50,7 @@ $result = $db_connection->query($sql);
 if ($result) {
     $_SESSION["category"] = $category;
     echo "Your category has been created!<br>
-    <form method=\"post\" action=\"displayThread.php\"> 
+    <form method=\"post\" action=\"thread.php\"> 
       <button class='btn btn-small btn-primary' type=\"submit\">Go to $category</button> 
     </form> ";
 
@@ -49,9 +60,9 @@ else {
 }
 
 /* Freeing memory */
-$result->close();
+/*$result->close();*/
 /* Closing connection */
-$db_connection->close();
+/*$db_connection->close();*/
 
 ?>
 <form method="post" action="categories.php">

@@ -14,6 +14,11 @@
     <?php
         session_start();
 
+        if(isset($_POST['category'])) {
+            $_SESSION['category'] = $_POST['category'];
+            header("Location: thread.php");
+        }
+        /*
         //localDB
         $servername = "cmsc389N-GroupProject";
         $user = "user";
@@ -27,6 +32,25 @@
             die("Connection failed: " . $db_connection->connect_error);
         }
         //echo "Connected successfully";
+        */
+
+        //Network DB
+        $host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
+        $user = "UMDtalk";
+        $password = "lkeMcds43#sd";
+        $database = "UMDtalk";
+
+        /*$host = "localhost";
+        $database = "cmsc389N-GroupProject";
+        $user = "user";
+        $password = "cmsc389N";*/
+
+        /* Connecting to the database */
+        $db_connection = new mysqli($host, $user, $password, $database);
+        if ($db_connection->connect_error) {
+            die($db_connection->connect_error);
+            return -1;
+        }
 
         //$sql = ("select * from threads order by category");
         $sql = ("select distinct category from threads order by category");
@@ -36,14 +60,15 @@
         if ($count == 0) {
             echo "<h3>No categories exist yet!</h3>";
         }
-        
+
+        echo "<form action='categories.php' method='post'>";
         while ($count > 0) {
             $row = $result->fetch_assoc();
-            $_SESSION["category"] = $row[category];
-            echo "<h2><a href='displayThread.php'>$row[category]</a></h2><br>";
+            $category=$row['category'];
+            echo "<button type='submit' name='category' value='$category'><h2>$category</h2></button><br>";
             $count--;
         }
-
+        echo "</form>";
 
         /* Freeing memory */
         $result->close();

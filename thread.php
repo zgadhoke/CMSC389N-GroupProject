@@ -22,7 +22,6 @@ if ($db_connection->connect_error) {
 
 $thread_name = $_SESSION['category'];
 $body = "";
-
 if(isset($_POST['submitPost'])) {
     $post = $_POST['newPost'];
     $user = $_SESSION['user'];

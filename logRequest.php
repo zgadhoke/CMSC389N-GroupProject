@@ -30,20 +30,6 @@ function login($username, $pass)
     }
 
 
-    //localDB
-   /* $servername = "cmsc389N-GroupProject";
-    $user = "user";
-    $password = "cmsc389N";
-
-    //Create Connection
-    $db_connection = new mysqli("localhost",$user,$password,$servername);
-
-    //Check Connection
-    if ($db_connection->connect_error) {
-        die("Connection failed: " . $db_connection->connect_error);
-    }
-    //echo "Connected successfully";*/
-
     $n = "name";
     /* Query */
     $username = mysqli_escape_string($db_connection, $username);
@@ -53,7 +39,9 @@ function login($username, $pass)
     $result = $db_connection->query($query);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $db_pass = $row['password'];
-    echo($row['password']);
+
+    echo $db_pass;
+
     //Finding Password in database to compare too
     /*foreach ($row as $key => $value) {
         if ($key == "password") {
@@ -86,9 +74,7 @@ function login($username, $pass)
 
 }
 
-if($_SESSION['started'] == 1) {
-    header("Location: categories.php");
-} else if (isset($_POST["username"]) && isset($_POST["password"])) {
+ if (isset($_POST["username"]) && isset($_POST["password"])) {
     $u = $_POST["username"];
     $p = $_POST["password"];
     login($u, $p);

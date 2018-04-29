@@ -6,11 +6,12 @@
 	/* Default userName for testing purposes is zubin. This will should be blank otherwise and 
 	 * below userName is set by the session variable */
 	$userName = "zubin";
-	//print_r($_SESSION);
+	//	print_r($_SESSION);
 	if(isset($_SESSION['started']) && $_SESSION['started'] == 1) {
 		$userName = $_SESSION['user'];
 	}
 
+	/* Local variable setup */
 	$host = "umdtalkdb.cqf37qcmlp7o.us-east-2.rds.amazonaws.com";
     $user = "UMDtalk";
     $password = "lkeMcds43#sd";
@@ -18,27 +19,13 @@
 
 	$postsArray = array();
 	$threadsArray = array();
+	$bio = "";
 
-    $htmlOpeningTags = <<<TAG
-  	<h1>Your Profile</h1>
-	<div class="container-fluid profile">
-TAG;
-
-	$htmlProfilePic = <<<PIC
-	<div class="profile-picture-frame">
-		<!-- This element might become dynamically generated to be an img tag if we 
-			add user ability to upload profile pictures -->
-		<span class="profile-picture glyphicon glyphicon-align-center glyphicon-paperclip"></span>
-	</div>
-	<span class='bio'>
-		<h5>Bio:</h5>
-		<!-- Dummy text for now -->
-		<em>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et ma
-		</em>
-	</span>
-PIC;
-
-    $body = $htmlOpeningTags.$htmlProfilePic."</div><h1 class='below-profile'>Your Posts</h1>";
+	/* db queries for user's posts, threads, and biography */
+    $query_bio = "select bio from users where name='$userName'";
+    $query_posts = "select * from posts where user='$userName'";
+    $query_threads = "select * from threads where user='$userName'";
+    /* End local variable declarations */
 
     $db_connection = new mysqli($host, $user, $password, $database);
     if ($db_connection->connect_error) {
@@ -47,22 +34,24 @@ PIC;
         return -1;
     }
 
-	/* Get all of the users posts from the db and set posts array */
-    $query_posts = "select * from posts where user='$userName'";
-    $result = $db_connection->query($query_posts);
+    $result = $db_connection->query($query_bio);
+	$result->data_seek(0);
+	$bio = $result->fetch_array(MYSQLI_ASSOC)['bio']; 
+	if (!$bio) $bio = "No biography added yet";
+	
 
+	/* Get all of the users posts from the db and set posts array */
+    $result = $db_connection->query($query_posts);
 	$rows = $result->num_rows;
-	for ($idx = 0; $idx < $result->num_rows; $idx++) {
+	for ($idx = 0; $idx < $rows; $idx++) {
 		$result->data_seek($idx);
 		$postsArray[$idx] = $result->fetch_array(MYSQLI_ASSOC);
 	} 
 	
 	/* Get all of the users threads from the db and set threads array */
-	$query_threads = "select * from threads where user='$userName'";
 	$result = $db_connection->query($query_threads);
-
 	$rows = $result->num_rows;
-	for ($idx = 0; $idx < $result->num_rows; $idx++) {
+	for ($idx = 0; $idx < $rows; $idx++) {
 		$result->data_seek($idx);
 		$threadsArray[$idx] = $result->fetch_array(MYSQLI_ASSOC);
 	} 
@@ -73,18 +62,37 @@ PIC;
 	//echo "<br />";
 	//print_r($threadsArray);
 
+    $htmlOpeningTags = <<<TAG
+  	<h1>Your Profile</h1>
+	<div class="container-fluid profile">
+TAG;
+
+	$htmlProfileInfo = <<<PIC
+	<div class="profile-picture-frame">
+		<!-- This element might become dynamically generated to be an img tag if we 
+			add user ability to upload profile pictures -->
+		<span class="profile-picture glyphicon glyphicon-align-center glyphicon-paperclip"></span>
+	</div>
+	<span class='bio'>
+		<h5>Bio:</h5>
+		<em>$bio</em>
+	</span>
+PIC;
+
+
+    $body = $htmlOpeningTags.$htmlProfileInfo."</div><h1 class='below-profile'>Your Posts</h1>";
+	// add each post and thread as marked up to the $body variable
     foreach ($postsArray as $idx => $assoc) {
     	$body .= createPostsDisplay($assoc['text'], $assoc['time'], $assoc['thread']);
     }
-
     $body .= "<h1>Your Threads</h1>";
-
     foreach ($threadsArray as $idx => $assoc) {
     	$body .= createThreadsDisplay($assoc['text'], $assoc['time'], $assoc['category'], $assoc['subject']);
     }
 
     echo generatePage($body);
 
+    /* Helper functions to generate list of posts and threads */
     function createPostsDisplay(string $text, string $time, string $thread) : string {
     	$str = <<<EOBODY
         <div class="row">

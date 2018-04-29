@@ -11,7 +11,17 @@
 
 <body>
 
-<h3>Please Select A Category or <a href="createCategory.html">Create A New Category</a></h3>
+
+    <table id="toolBar">
+        <tr>
+            <td><form action="createCategory.html" method="post"><button type="submit">Create a New Category</button> </form></td>
+            <td><form action="viewProfile.php" method="post"><button type="submit">View/Edit Profile</button> </form></td>
+            <td><form action="loginScreen.html" method="post"><button type="submit">LogOut</button> </form></td>
+        </tr>
+    </table>
+    <hr>
+
+<h2><u>Categories</u></h2>
     <?php
         session_start();
 

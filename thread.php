@@ -20,6 +20,16 @@ if ($db_connection->connect_error) {
     return -1;
 }
 
+
+echo "<table id=\"toolBar\">
+    <tr>
+        <td><form action=\"categories.php\" method=\"post\"><button type=\"submit\">Back to Categories</button> </form></td>
+        <td><form action=\"viewProfile.php\" method=\"post\"><button type=\"submit\">View/Edit Profile</button> </form></td>
+        <td><form action=\"loginScreen.html\" method=\"post\"><button type=\"submit\">LogOut</button> </form></td>
+    </tr>
+</table>
+<hr>";
+
 $thread_name = $_SESSION['category'];
 $body = "";
 if(isset($_POST['submitPost'])) {
@@ -31,12 +41,8 @@ if(isset($_POST['submitPost'])) {
     $query = "insert into threads values('$user', '$date', '$thread', '$subject', '$post')";
     $result = $db_connection->query($query);
     if(!$result) {
-        echo "fucked up" . $db_connection->error;
+        echo "messed up" . $db_connection->error;
     }
-    $body .= <<<EOBODY
-        <div class="container-fluid">Thread updated! Refresh page or <a href="thread.php">click here</a> to see your post.</div>
-EOBODY;
-
 }
 
 
@@ -52,9 +58,6 @@ $posts = mysqli_fetch_all($result, MYSQLI_NUM);
 $body .= <<<EOBODY
 <div class="container-fluid">
     <h1>$thread_name</h1>
-    <form action="categories.php" method="post">
-    <button type="submit" class="btn btn-small">Back to Categories</button>
-    </form>
 EOBODY;
 
 foreach($posts as $post) {

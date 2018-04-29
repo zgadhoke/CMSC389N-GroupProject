@@ -11,6 +11,15 @@
 
 <body>
 
+<table id="toolBar">
+    <tr>
+        <td><form action="categories.php.html" method="post"><button type="submit">Back to Categories</button> </form></td>
+        <td><form action="viewProfile.php" method="post"><button type="submit">View/Edit Profile</button> </form></td>
+        <td><form action="loginScreen.html" method="post"><button type="submit">LogOut</button> </form></td>
+    </tr>
+</table>
+<hr>
+
 <?php
 session_start();
 

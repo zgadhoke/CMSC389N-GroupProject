@@ -58,7 +58,7 @@ function createNewUser($username, $pass)
     $passHash = mysqli_escape_string($db_connection, $passHash);
     $username = mysqli_escape_string($db_connection, $username);
 
-    $query = "insert into users values('$username', '$passHash', NULL)";
+    $query = "insert into users values('$username', '$passHash', NULL, NULL)";
     /* Executing query */
     $result = $db_connection->query($query);
     if (!$result) {

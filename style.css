@@ -53,11 +53,28 @@ button {
     margin-top: 150px;
 }
 
-.bio {
+.biography {
     position: absolute;
     left: 320px;
     top: 20px;
     height: 160px;
     width: 600px;
+    color: #ffffff;
+}
+
+#edit-bio {
+    margin-left: 10px;
+    color: #aaaaaa;
+}
+
+#edit-bio:hover {
+    color: #ffffff;
+}
+
+.is-invalid {
+    border: 1px solid red;
+}
+
+.invalid-feedback {
     color: #ffffff;
 }

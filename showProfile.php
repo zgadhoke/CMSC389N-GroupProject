@@ -73,9 +73,11 @@ TAG;
 			add user ability to upload profile pictures -->
 		<span class="profile-picture glyphicon glyphicon-align-center glyphicon-paperclip"></span>
 	</div>
-	<span class='bio'>
+	<span class='biography'>
 		<h5>Bio:</h5>
-		<em>$bio</em>
+		<div id="bio">
+			<em id="bio-text">$bio</em><span id="edit-bio" class="glyphicon glyphicon-pencil"></span>
+		</div>
 	</span>
 PIC;
 
@@ -89,6 +91,8 @@ PIC;
     foreach ($threadsArray as $idx => $assoc) {
     	$body .= createThreadsDisplay($assoc['text'], $assoc['time'], $assoc['category'], $assoc['subject']);
     }
+
+    $body .= "<script <script src='asyncProfileUpdate.js'></script>";
 
     echo generatePage($body);
 

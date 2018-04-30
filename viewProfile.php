@@ -28,6 +28,7 @@
     $query_propic = "select profilePicture from users where name='$userName'";
     /* End local variable declarations */
 
+
     $db_connection = new mysqli($host, $user, $password, $database);
     if ($db_connection->connect_error) {
         die($db_connection->connect_error);
@@ -35,12 +36,40 @@
         return -1;
     }
 
+    /* if picture form submitted update the db to store the uploaded image before retrieving it 
+     * from the db to display */
+    //print_r($_POST);
+    $errFeedback = "";
+    if (isset($_POST['submit'])) {
+       // print_r($_FILES);
+
+        $imageName = $db_connection->real_escape_string($_FILES["image"]["name"]);
+        if ($_FILES['image']['tmp_name']) 
+            $imageData = $db_connection->real_escape_string(file_get_contents($_FILES["image"]["tmp_name"]));
+        $imageType = $db_connection->real_escape_string($_FILES["image"]["type"]);
+        $imageSize = $_FILES["image"]["size"];
+
+        if ((substr($imageType,0,5) == "image") && ($imageSize <= 16777215) && (!$_FILES["image"]["error"])) {
+            /* All good to go */
+            $db_connection->query("update users set profilePicture='$imageData' where name='$userName'");  
+        } else if (substr($imageType,0,5) != "image") {
+            /* File uploaded is not of type image */
+             $errFeedback = "<div class=\"invalid\">Error: Invalid file type selected</div>";
+        } else if ($imageSize > 16777215) {
+            /* File is too large to store in MEDIUMBLOB field */
+            $errFeedback = "<div class=\"invalid\">Error: File selected is too large (16MB)</div>";
+        } else if ($_FILES["image"]["error"]) {
+            /* Error detected uploading file */
+            $errFeedback = "<div class=\"invalid\">Error uploading file</div>";
+        }
+    }
+
+    /* get bio from db */
     $result = $db_connection->query($query_bio);
 	$result->data_seek(0);
 	$bio = $result->fetch_array(MYSQLI_ASSOC)['bio']; 
 	if (!$bio) $bio = "No biography added yet";
 	
-
 	/* Get all of the users posts from the db and set posts array */
     $result = $db_connection->query($query_posts);
 	$rows = $result->num_rows;
@@ -69,16 +98,16 @@
 
     /* Setup parkup of profile picture to be paperclip glyphicon if no image uploaded, otherwise 
      * set it up to be the img tag */
+    $profilePictureMarkup = "";
     if ($image) {
         $profilePictureMarkup = "<img class=\"profile-picture\" src=\"data:image/jpeg;base64,$image\"/>";
-    } else {
-        $profilePictureMarkup = "<span class=\"profile-picture glyphicon glyphicon-align-center glyphicon-paperclip\"></span>"; 
-    }
+    } 
 
     $htmlOpeningTags = <<<TAG
-  	<h1>Your Profile</h1>
-    <h4>Username: $userName</h4>
-	<div class="container-fluid profile">
+  	<div id="maincontent">
+        <h1>Your Profile</h1>
+        <h4>Username: $userName</h4>
+    	<div class="container-fluid profile">
 TAG;
 
 	$htmlProfileInfo = <<<PIC
@@ -86,6 +115,17 @@ TAG;
 		<!-- This element might become dynamically generated to be an img tag if we 
 			add user ability to upload profile pictures -->
             $profilePictureMarkup
+            <form class="upload-form" action="viewProfile.php" method="POST" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label class="custom-file-upload"> 
+                        <input id="image" type="file" name="image">
+                    <span class="glyphicon glyphicon-paperclip"></span>
+                    </label> 
+                    <span class="input-group-btn"><input class="btn btn-primary" type="submit" name="submit" value="Upload" /></span>
+                </div>
+                $errFeedback
+            </form>
+
 	</div>
 	<span class='biography'>
 		<h5>Bio:</h5>
@@ -106,7 +146,7 @@ PIC;
     	$body .= createThreadsDisplay($assoc['text'], $assoc['time'], $assoc['category'], $assoc['subject']);
     }
 
-    $body .= "<script <script src='asyncProfileUpdate.js'></script>";
+    $body .= "</div><script <script src='asyncProfileUpdate.js'></script>";
 
     echo generatePage($body);
 

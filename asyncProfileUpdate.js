@@ -7,8 +7,7 @@ var firstFeedbackMessage = true;
 var bioElement = document.getElementById("bio");
 var bioText = document.getElementById("bio-text").innerHTML;
 
-
-function editBiography() {
+function editBiography() { 
 	bioElement.innerHTML = "<div class=\"input-group\"><textarea id=\"bio-input\" class=\"form-control\" rows=\"1\">" +
 	bioText + "</textarea> <span class=\"input-group-btn\"><button id=\"update-bio\" class=\"btn btn-default\" type=\"button\">Done</button></span></div>";
 	document.getElementById("update-bio").onclick = updateBiography;

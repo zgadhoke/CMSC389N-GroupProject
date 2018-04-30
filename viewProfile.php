@@ -104,25 +104,17 @@
     } 
 
     $htmlOpeningTags = <<<TAG
-<<<<<<< HEAD
   	<div id="maincontent">
-        <h1>Your Profile</h1>
-        <h4>Username: $userName</h4>
-    	<div class="container-fluid profile">
-=======
-    
-    <table id="toolBar">
-    <tr>
-        <td><form action="categories.php" method="post"><button type="submit">Back to Categories</button> </form></td>
-        <td><form action="loginScreen.html" method="post"><button type="submit">LogOut</button> </form></td>
-    </tr>
-</table>
-<hr>
-
+        <table id="toolBar">
+        <tr>
+            <td><form action="categories.php" method="post"><button type="submit">Back to Categories</button> </form></td>
+            <td><form action="loginScreen.html" method="post"><button type="submit">LogOut</button> </form></td>
+        </tr>
+        </table>
+    <hr>
   	<h1>Your Profile</h1>
     <h4>Username: $userName</h4>
 	<div class="container-fluid profile">
->>>>>>> a833874526a196b6854f1388d4c243ba030bb1ce
 TAG;
 
 	$htmlProfileInfo = <<<PIC

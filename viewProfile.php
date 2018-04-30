@@ -135,7 +135,7 @@ TAG;
 
 	</div>
 	<span class='biography'>
-		<h5>Bio:</h5>
+		<h5 id="bio-title">Bio:</h5>
 		<div id="bio">
 			<em id="bio-text">$bio</em><span id="edit-bio" class="glyphicon glyphicon-pencil"></span>
 		</div>

@@ -8,7 +8,7 @@
 	$userName = "zubin";
 	//	print_r($_SESSION);
 	if(isset($_SESSION['started']) && $_SESSION['started'] == 1) {
-		$userName = $_SESSION['user'];
+	   $userName = $_SESSION['user'];
 	}
 
 	/* Local variable setup */
@@ -25,6 +25,7 @@
     $query_bio = "select bio from users where name='$userName'";
     $query_posts = "select * from posts where user='$userName'";
     $query_threads = "select * from threads where user='$userName'";
+    $query_propic = "select profilePicture from users where name='$userName'";
     /* End local variable declarations */
 
     $db_connection = new mysqli($host, $user, $password, $database);
@@ -55,12 +56,24 @@
 		$result->data_seek($idx);
 		$threadsArray[$idx] = $result->fetch_array(MYSQLI_ASSOC);
 	} 
-
+    /* Get image of profile picture from db */
+    $result = $db_connection->query($query_propic);
+    $result->data_seek(0);
+    $imageData = $result->fetch_array(MYSQLI_ASSOC)['profilePicture']; 
+    $image = base64_encode( $imageData );
 	$result->close();
 
 	//print_r($postsArray);
 	//echo "<br />";
 	//print_r($threadsArray);
+
+    /* Setup parkup of profile picture to be paperclip glyphicon if no image uploaded, otherwise 
+     * set it up to be the img tag */
+    if ($image) {
+        $profilePictureMarkup = "<img class=\"profile-picture\" src=\"data:image/jpeg;base64,$image\"/>";
+    } else {
+        $profilePictureMarkup = "<span class=\"profile-picture glyphicon glyphicon-align-center glyphicon-paperclip\"></span>"; 
+    }
 
     $htmlOpeningTags = <<<TAG
   	<h1>Your Profile</h1>
@@ -72,7 +85,7 @@ TAG;
 	<div class="profile-picture-frame">
 		<!-- This element might become dynamically generated to be an img tag if we 
 			add user ability to upload profile pictures -->
-		<span class="profile-picture glyphicon glyphicon-align-center glyphicon-paperclip"></span>
+            $profilePictureMarkup
 	</div>
 	<span class='biography'>
 		<h5>Bio:</h5>

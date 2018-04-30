@@ -4,6 +4,7 @@
 
 body {
     padding-top: 50px;
+    padding-left: 50px;
 }
 
 h1 {
@@ -78,3 +79,17 @@ button {
 .invalid-feedback {
     color: #ffffff;
 }
+
+#toolBar{
+    color: cornflowerblue;
+}
+
+td{
+    padding-left: 10pt;
+    padding-right: 10pt;
+}
+
+h1,h2,h4,h5,h6{
+    color: cornflowerblue;
+}
+

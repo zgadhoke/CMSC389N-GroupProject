@@ -61,10 +61,32 @@ $body .= <<<EOBODY
 EOBODY;
 
 foreach($posts as $post) {
+    $count = 0;
     $user = $post[0];
     $time = $post[1];
     $text = $post[4];
-    $body .= <<<EOBODY
+    $subj = $post[3];
+    if($subj!="") {
+        $body .= <<<EOBODY
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">User: $user  &nbsp; &nbsp; Subject: $subj</h4>
+                    </div>
+                    <div class="panel-body">
+                        $text
+                    </div>
+                    <div class="panel-footer">
+                        Posted at: $time
+                    </div>
+                </div>
+            </div>
+        </div>
+EOBODY;
+    }
+    else{
+        $body .= <<<EOBODY
         <div class="row">
             <div class="col-xs-4">
                 <div class="panel panel-default">
@@ -81,6 +103,7 @@ foreach($posts as $post) {
             </div>
         </div>
 EOBODY;
+    }
 }
 $body .= "</div>";
 

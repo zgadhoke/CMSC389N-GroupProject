@@ -76,7 +76,7 @@
         while ($count > 0) {
             $row = $result->fetch_assoc();
             $category=$row['category'];
-            echo "<button class='button' type='submit' name='category' value='$category'><h2>$category</h2></button><br>";
+            echo "<button class='button' type='submit' name='category' value='$category'><h3>$category</h3></button><br>";
             $count--;
         }
         echo "</form>";

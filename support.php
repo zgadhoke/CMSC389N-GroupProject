@@ -1,6 +1,6 @@
 <?php
 
-function generatePage($body, $title="Project3") {
+function generatePage($body, $title="UMDtalk") {
     $page = <<<EOPAGE
 <!doctype html>
 <html>

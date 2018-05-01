@@ -99,6 +99,7 @@
     /* Setup parkup of profile picture to be paperclip glyphicon if no image uploaded, otherwise 
      * set it up to be the img tag */
     $profilePictureMarkup = "";
+
     if ($image) {
         $profilePictureMarkup = "<img class=\"profile-picture\" src=\"data:image/jpeg;base64,$image\"/>";
     } 

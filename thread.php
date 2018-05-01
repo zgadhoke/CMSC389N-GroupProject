@@ -60,19 +60,41 @@ $body .= <<<EOBODY
     <h1>$thread_name</h1>
 EOBODY;
 
+$userPics = array();
+
 foreach($posts as $post) {
     $count = 0;
     $user = $post[0];
     $time = $post[1];
     $text = $post[4];
     $subj = $post[3];
+
+    if(!isset($userPics[$user])) {
+        $query_propic = "select profilePicture from users where name='$user'";
+        $result = $db_connection->query($query_propic);
+        $image = false;
+        if($result) {
+            $result->data_seek(0);
+            $imageData = $result->fetch_array(MYSQLI_ASSOC)['profilePicture'];
+            $image = base64_encode($imageData);
+            $result->close();
+        }
+        $profilePictureMarkup = "";
+        if ($image) {
+            $profilePictureMarkup = "<img class=\"profile-picture\" src=\"data:image/jpeg;base64,$image\" height=\"20\" width=\"20\"/>";
+        }
+        $userPics[$user] = $profilePictureMarkup;
+    }
+
+
     if($subj!="") {
         $body .= <<<EOBODY
         <div class="row">
             <div class="col-xs-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title">User: $user  &nbsp; &nbsp; Subject: $subj</h4>
+                       <!-- <h4 class="panel-title">User: $user  &nbsp; &nbsp; Subject: $subj</h4> -->
+                        <table><tr><td id="thumbnail">$userPics[$user]</td><td>User: $user</td><td>Subject: $subj</td></tr></table>
                     </div>
                     <div class="panel-body">
                         $text
@@ -91,7 +113,8 @@ EOBODY;
             <div class="col-xs-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title">User: $user</h4>
+                       <!-- <h4 class="panel-title">User: $user  &nbsp; &nbsp; Subject: $subj</h4> -->
+                        <table><tr><td id="thumbnail">$userPics[$user]</td><td>User: $user</td><td></td></tr></table>
                     </div>
                     <div class="panel-body">
                         $text

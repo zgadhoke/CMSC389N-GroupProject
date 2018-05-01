@@ -40,7 +40,7 @@ function login($username, $pass)
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     $db_pass = $row['password'];
 
-    echo $db_pass;
+   
 
     //Finding Password in database to compare too
     /*foreach ($row as $key => $value) {
